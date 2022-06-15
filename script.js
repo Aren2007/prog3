@@ -1,158 +1,42 @@
-function generate(matLen,gr,grEat,pr,zm,pl,mn) {
-    let matrix = []
-    for (let i = 0; i < matLen; i++) {
-        matrix[i] = []
-        for (let j = 0; j < matLen; j++) {
-            matrix[i][j] = 0
-        }
-    }
+//նորից սոքեթը փոխանցիր փոփոխականիդ
+var socket = io();
 
-    for (let i = 0; i < gr; i++) {
-        let x = Math.floor(Math.random()*matLen)
-        let y = Math.floor(Math.random()*matLen)
-        if(matrix[y][x] == 0) {
-            matrix[y][x] = 1
-        }
-    }
-    for (let i = 0; i < grEat; i++) {
-        let x = Math.floor(Math.random()*matLen)
-        let y = Math.floor(Math.random()*matLen)
-        console.log(x,y);
-        if(matrix[y][x] == 0) {
-            matrix[y][x] = 2
-        }
-    }
-    for (let i = 0; i < pr; i++) {
-        let x = Math.floor(Math.random()*matLen)
-        let y = Math.floor(Math.random()*matLen)
-        console.log(x,y);
-        if(matrix[y][x] == 0) {
-            matrix[y][x] = 3
-        }
-    }
-    for (let i = 0; i < zm; i++) {
-        let x = Math.floor(Math.random()*matLen)
-        let y = Math.floor(Math.random()*matLen)
-        console.log(x,y);
-        if(matrix[y][x] == 0) {
-            matrix[y][x] = 4
-        }
-    }
-    for (let i = 0; i < pl; i++) {
-        let x = Math.floor(Math.random()*matLen)
-        let y = Math.floor(Math.random()*matLen)
-        console.log(x,y);
-        if(matrix[y][x] == 0) {
-            matrix[y][x] = 5
-        }
-    }
-    for (let i = 0; i < mn; i++) {
-        let x = Math.floor(Math.random()*matLen)
-        let y = Math.floor(Math.random()*matLen)
-        console.log(x,y);
-        if(matrix[y][x] == 0) {
-            matrix[y][x] = 6
-        }
-    }
-    return matrix
-}
-
-
-let matrix = generate(25,60,8,10,50,50,0)
-
-
-var side = 15;
-let grassArr = []
-let grassEaterArr = []
-let predatorArr = []
-let zombiArr = []
-let peopleArr = []
-let mineArr = []
+//էստեղ նախկին սկրիպտ ֆայլիցդ տպում և էստեղ ես բերում setup ֆունկցիան
+ side = 30
 
 function setup() {
-    frameRate(5);
-    createCanvas(matrix[0].length * side, matrix.length * side);
-    background('#acacac');
-
-    for (var y = 0; y < matrix.length; y++) {
-        for (var x = 0; x < matrix[y].length; x++) {
-
-            if (matrix[y][x] == 1) {
-                let gr = new Grass(x, y)
-                grassArr.push(gr)
-            } else if (matrix[y][x] == 2) {
-                let gr = new GrassEater(x, y)
-                grassEaterArr.push(gr)
-            } else if (matrix[y][x] == 3) {
-                let gr = new Predator(x, y)
-                predatorArr.push(gr)
-            }else if (matrix[y][x] == 4) {
-                let gr = new Zombi(x, y)
-                zombiArr.push(gr)
-            }else if (matrix[y][x] == 5) {
-                let gr = new People(x, y)
-                peopleArr.push(gr)
-            }else if (matrix[y][x] == 6) {
-                let gr = new Mine(x, y)
-                mineArr.push(gr)
-            }
-        }
-    }
-
+    createCanvas(7 * side, 13 * side);
+    background("#acacac");
 }
 
-function draw() {
-
-    for (var y = 0; y < matrix.length; y++) {
-        for (var x = 0; x < matrix[y].length; x++) {
-
-            if (matrix[y][x] == 1) {
-                fill("green");
-            }
-            else if (matrix[y][x] == 0) {
-                fill("#acacac");
-            }
-            else if (matrix[y][x] == 2) {
-                fill("yellow");
-            }
-            else if (matrix[y][x] == 3) {
-                fill("red");
-            }
-            else if (matrix[y][x] == 4) {
-                fill("#4BAB16");
-            }
-            else if (matrix[y][x] == 5) {
-                fill("black");
-            }
-            else if (matrix[y][x] == 6) {
-                fill("brown");
-            }
-            
-            rect(x * side, y * side, side, side, 100);
-
-
+// էստեղ բերում դնում ես նախկին սկրիպտ ֆայլիդ draw  ֆունկցիան, սակայն անունը փոխում ես
+// դնում ես օրինաաաաակ նկարել, կամ ուրիշ բան
+function nkarel(matrix) {
+    console.log(matrix);
+    
+for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+       
+        if (matrix[y][x] == 1) {
+            fill("green");
+            rect(x * side, y * side, side, side)
+        }
+        else if (matrix[y][x] == 2) {
+            fill("yellow");
+            rect(x * side, y * side, side, side);
         }
     }
-
-    for(var i in grassArr){
-        grassArr[i].mul()
-     }
-   
-     for(let i in grassEaterArr) {
-         grassEaterArr[i].eat()
-     }
-
-     for(let i in predatorArr) {
-        predatorArr[i].eat()
-    }
-
-    for(let i in zombiArr) {
-        zombiArr[i].eat()
-    }
-    for(let i in peopleArr) {
-        peopleArr[i].eat()
-    }
-    for(let i in mineArr) {
-        mineArr[i].boom()
-    }
 }
+
+}
+// քանի որ այժմ չունենք draw ֆունկցիա, որ ավտոմատ կանչվի, այդ պատճառով այն կանչում ենք 
+// setInterval մեթոդի մեջ:
+//էստեղ կլիենտը լսողն է: on մեթոդը լսելով send matrix հրամանը, կատարում է նկարել ֆունկցիան
+// և որպես արգումենտ վերցնում սերվերի մատրիցը լցնելուց հետո գրված emit-ի մատրիցը:
+setInterval(
+    function () {
+    socket.on('send matrix', nkarel)
+    },1000
+)
+
+//էստեղ այսքանը, հիմա նորից գնա սերվեր ֆայլ
